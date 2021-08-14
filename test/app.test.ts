@@ -1,6 +1,6 @@
-import classNames from './app.module.css';
+import css from './app.module.css';
 
 test('class names should be suffixed', () => {
-  expect(classNames.app).toEqual(expect.stringMatching(/app_.+/));
-  expect(classNames.appChild).toEqual(expect.stringMatching(/app-child_.+/));
+  expect(css.app).toEqual(expect.stringMatching(/app_.+/));
+  expect(css.appChild).toEqual(expect.stringMatching(/app-child_.+/));
 });

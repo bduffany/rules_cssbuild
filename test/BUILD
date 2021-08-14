@@ -1,6 +1,5 @@
 load("@npm//@bazel/typescript:index.bzl", "ts_library")
-
-# load("@npm//jest-cli:index.bzl", "jest_test")
+load("@npm//jest-cli:index.bzl", "jest_test")
 load("//:def.bzl", "css_module")
 
 css_module(
@@ -29,12 +28,12 @@ genrule(
 
 sh_test(
     name = "test_css_contents",
-    srcs = ["test.sh"],
+    srcs = ["test_css_contents.sh"],
     data = [":styles.css"],
 )
 
 ts_library(
-    name = "test_lib",
+    name = "app_test_lib",
     srcs = ["app.test.ts"],
     deps = [
         ":app_css",
@@ -43,18 +42,18 @@ ts_library(
     ],
 )
 
-# jest_test(
-#     name = "test",
-#     args = [
-#         "--no-cache",
-#         "--no-watchman",
-#         "--ci",
-#         "--colors",
-#         "--config",
-#         "jest.ts.config.js",
-#     ],
-#     data = [
-#         ":test_lib",
-#         "//:jest.ts.config.js",
-#     ],
-# )
+jest_test(
+    name = "app_test",
+    args = [
+        "--no-cache",
+        "--no-watchman",
+        "--ci",
+        "--colors",
+        "--config",
+        "jest.ts.config.js",
+    ],
+    data = [
+        ":app_test_lib",
+        "//:jest.ts.config.js",
+    ],
+)
