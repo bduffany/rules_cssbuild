@@ -4,35 +4,40 @@ load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("//:def.bzl", "css_module")
 
 css_module(
-    name = "css",
-    srcs = ["styles.module.css"],
-    out = "styles.css",
+    name = "app_css",
+    srcs = ["app.module.css"],
+    out = "app.css",
+    flags = ["-camel_case_js_keys"],
+)
+
+css_module(
+    name = "widget_css",
+    srcs = ["widget.module.css"],
+    out = "widget.css",
     flags = ["-camel_case_js_keys"],
 )
 
 genrule(
-    name = "css_bundle",
-    srcs = ["styles.css"],
-    outs = ["styles.bundle.css"],
+    name = "styles",
+    srcs = [
+        "app.css",
+        "widget.css",
+    ],
+    outs = ["styles.css"],
     cmd_bash = "cat $(SRCS) > $@",
 )
 
 sh_test(
     name = "test_css_contents",
     srcs = ["test.sh"],
-    data = [":styles.bundle.css"],
-)
-
-ts_library(
-    name = "example_output",
-    srcs = ["example_output.ts"],
+    data = [":styles.css"],
 )
 
 ts_library(
     name = "test_lib",
-    srcs = ["component.test.ts"],
+    srcs = ["app.test.ts"],
     deps = [
-        ":css",
+        ":app_css",
         "@npm//@types/jest",
         "@npm//tslib",
     ],

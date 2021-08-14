@@ -16,5 +16,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "exclude": ["bazel-out", "bazel-bin"]
+  "exclude": ["bazel-bin", "bazel-out", "bazel-rules_cssbuild", "external"]
 }

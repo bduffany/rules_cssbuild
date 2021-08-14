@@ -1,6 +1,5 @@
+load("@build_bazel_rules_nodejs//:providers.bzl", "declaration_info", "js_module_info")
 # load("@build_bazel_rules_nodejs//:providers.bzl", "declaration_info", "js_ecma_script_module_info", "js_module_info")
-
-load("@build_bazel_rules_nodejs//:providers.bzl", "declaration_info")
 
 def _css_module_impl(ctx):
     if len(ctx.files.srcs) > 1:
@@ -34,8 +33,8 @@ def _css_module_impl(ctx):
     return [
         DefaultInfo(files = depset(direct = [ctx.outputs.out, js_out, ts_out])),
         declaration_info(declarations = depset(direct = [ts_out])),
-        # TODO(bduffany): Figure out whether these are needed
-        # js_module_info(sources = depset(direct = [js_out])),
+        js_module_info(sources = depset(direct = [js_out])),
+        # TODO(bduffany): Figure out whether this is needed
         # js_ecma_script_module_info(sources = depset(direct = [js_out])),
     ]
 
