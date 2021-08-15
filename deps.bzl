@@ -4,8 +4,8 @@ def rules_cssbuild_dependencies():
     go_repository(
         name = "com_github_bduffany_cssbuild",
         importpath = "github.com/bduffany/cssbuild",
-        sum = "h1:SxBxmEP/WkuLi3Ater8l8rDejZyK3vTgKHG+6wBbIac=",
-        version = "v0.1.3",
+        sum = "h1:FesQL98l4c6uzbrfZq0PQR31Ga9G+f/qL8EZE9tDWLs=",
+        version = "v0.1.4",
     )
     go_repository(
         name = "com_github_tdewolff_parse_v2",
