@@ -1,1 +1,12 @@
-test --test_output=streamed
+# BuildBuddy
+
+build:buildbuddy_bes --bes_backend=remote.buildbuddy.io
+build:buildbuddy_bes --bes_results_url=https://app.buildbuddy.io/invocation/
+build:buildbuddy_cache --remote_cache=remote.buildbuddy.io
+build:buildbuddy_rbe --remote_executor=remote.buildbuddy.io
+build:buildbuddy_ci_metadata --build_metadata=ROLE=CI
+
+build:buildbuddy_workflows --config=buildbuddy_bes
+build:buildbuddy_workflows --config=buildbuddy_rbe
+build:buildbuddy_workflows --config=buildbuddy_ci_metadata
+
