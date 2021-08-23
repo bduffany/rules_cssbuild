@@ -1,4 +1,5 @@
-# rules\_cssbuild (WIP)
+# rules\_cssbuild
 
-Bazel rules for github.com/bduffany/cssbuild
+Bazel rules for [cssbuild](https://github.com/bduffany/cssbuild)
+
 

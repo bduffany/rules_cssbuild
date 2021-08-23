@@ -1,9 +1,11 @@
 workspace(
-    name = "rules_cssbuild",
+    name = "rules_cssbuild_examples_typescript",
     managed_directories = {"@npm": ["node_modules"]},
 )
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# TODO(bduffany): Use a toolchain for this to simplify deps (similar to @bazel/esbuild)
 
 http_archive(
     name = "io_bazel_rules_go",
@@ -24,17 +26,26 @@ http_archive(
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-load("//:deps.bzl", "rules_cssbuild_dependencies")
-
-# gazelle:repository_macro deps.bzl%rules_cssbuild_dependencies
-rules_cssbuild_dependencies()
 
 go_rules_dependencies()
 
 go_register_toolchains(version = "1.16.5")
 
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
 gazelle_dependencies()
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "com_github_bduffany_rules_cssbuild",
+    branch = "master",
+    remote = "https://github.com/bduffany/rules_cssbuild",
+)
+
+load("@com_github_bduffany_rules_cssbuild//:deps.bzl", "rules_cssbuild_dependencies")
+
+rules_cssbuild_dependencies()
 
 http_archive(
     name = "build_bazel_rules_nodejs",
@@ -49,3 +60,7 @@ yarn_install(
     package_json = "//:package.json",
     yarn_lock = "//:yarn.lock",
 )
+
+load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "esbuild_repositories")
+
+esbuild_repositories()

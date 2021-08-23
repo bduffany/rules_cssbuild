@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+}
+
+.root {
+  display: inline-block;
+  margin: 32px;
+  padding: 8px;
+  font-family: sans-serif;
+  border-radius: 8px;
+  animation: 2s linear infinite alternate-reverse pulse;
+}
+
+@keyframes pulse {
+  from {
+    background-color: #eee;
+  }
+  to {
+    background-color: transparent;
+  }
+}

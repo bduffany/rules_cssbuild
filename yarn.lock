@@ -302,10 +302,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/bazelisk/-/bazelisk-1.10.1.tgz#46236a43ad58e310c55247f866da0dc6083c3d8b"
   integrity sha512-IHszNzBO2UrUy6YtsSAsZtnU6I6qpzXGkWdEvGoMxLgJnDsEnsIYniDCUjvjU1KAP+A03eepmCHlyFcRHMSxRA==
 
-"@bazel/typescript@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.0.0-rc.0.tgz#0507e329d66c1b94a4fe66423ce2e7ee2fcbd0b2"
-  integrity sha512-Aa0SoUNzLSePcupAqZbdjJX3Q8hRLuMQluIga5rnPPxcvy6/NvU/N4pKIN7kRzDe4xJ3JQ45fLPYNnoUGEMtjQ==
+"@bazel/typescript@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.0.0-rc.1.tgz#6187e3cb34218afd2fba8927746df6502e31d5c8"
+  integrity sha512-oz3jLMbVEaMvkZP+necQxnNigsnLdqR9r6t+oUq0zhOW92SBmIbgBpAa1YPAHLDSC8YICrAOcUuXgMfiz136bw==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
