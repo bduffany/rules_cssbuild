@@ -1,19 +1,22 @@
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//jest-cli:index.bzl", "jest_test")
 load("//:def.bzl", "css_module")
 
 css_module(
     name = "app_css",
     srcs = ["app.module.css"],
-    out = "app.css",
-    flags = ["-camel_case_js_keys"],
+)
+
+ts_project(
+    name = "app_css_ts",
+    srcs = ["app.module.css.ts"],
+    composite = True,
+    tsconfig = "//:tsconfig.json",
 )
 
 css_module(
     name = "widget_css",
     srcs = ["widget.module.css"],
-    out = "widget.css",
-    flags = ["-camel_case_js_keys"],
 )
 
 genrule(
@@ -32,11 +35,13 @@ sh_test(
     data = [":styles.css"],
 )
 
-ts_library(
+ts_project(
     name = "app_test_lib",
     srcs = ["app.test.ts"],
+    composite = True,
+    tsconfig = "//:tsconfig.json",
     deps = [
-        ":app_css",
+        ":app_css_ts",
         "@npm//@types/jest",
         "@npm//tslib",
     ],

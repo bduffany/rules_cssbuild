@@ -1,25 +1,33 @@
 load("@com_github_bduffany_rules_cssbuild//:def.bzl", "css_module")
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 
 css_module(
     name = "css",
     srcs = ["app.module.css"],
-    out = "app.css",
 )
 
-ts_library(
+ts_project(
+    name = "css_ts",
+    srcs = [":app.module.css.ts"],
+    composite = True,
+    tsconfig = ":tsconfig.json",
+)
+
+ts_project(
     name = "app",
     srcs = ["app.ts"],
+    composite = True,
+    tsconfig = ":tsconfig.json",
     deps = [
-        ":css",
+        ":css_ts",
+        "@npm//tslib",
     ],
 )
 
 esbuild(
     name = "bundle",
     entry_point = "app.ts",
-    minify = True,
     deps = [
         ":app",
     ],

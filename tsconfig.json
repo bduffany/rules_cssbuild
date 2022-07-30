@@ -1,20 +1,20 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
+    "composite": true,
     "noImplicitAny": true,
     "importHelpers": true,
     "moduleResolution": "node",
     "module": "commonjs",
     "sourceMap": false,
-    "outDir": "dist",
     "target": "ES2016",
     "baseUrl": ".",
     "lib": ["es2017", "es2019", "dom", "dom.iterable"],
-    "rootDirs": [".", "bazel-bin"],
-    "paths": {
-      "rules_cssbuild/*": ["*", "bazel-bin/*"],
-      "*": ["node_modules/*"]
-    }
-  },
-  "exclude": ["bazel-bin", "bazel-out", "bazel-rules_cssbuild", "external"]
+    "rootDirs": [
+      ".",
+      "bazel-bin",
+      "bazel-out/k8-fastbuild/bin",
+      "bazel-out/k8-opt/bin"
+    ]
+  }
 }
