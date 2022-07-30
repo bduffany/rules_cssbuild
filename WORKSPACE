@@ -38,14 +38,34 @@ gazelle_dependencies()
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "275744d287af4c3a78d7c9891f2d970b7bc7eca8cfc0e9a671fe6258d09ff217",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.0.0-rc.1/rules_nodejs-4.0.0-rc.1.tar.gz"],
+    sha256 = "2b2004784358655f334925e7eadc7ba80f701144363df949b3293e1ae7a2fb7b",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.4.0/rules_nodejs-5.4.0.tar.gz"],
+)
+
+load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
+
+build_bazel_rules_nodejs_dependencies()
+
+load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
+
+nodejs_register_toolchains(
+    name = "nodejs",
+    node_version = "16.9.0",
+)
+
+load("@rules_nodejs//nodejs:yarn_repositories.bzl", "yarn_repositories")
+
+yarn_repositories(
+    name = "yarn",
+    yarn_version = "1.22.10",
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 yarn_install(
     name = "npm",
+    exports_directories_only = False,
     package_json = "//:package.json",
+    symlink_node_modules = True,
     yarn_lock = "//:yarn.lock",
 )

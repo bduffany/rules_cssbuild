@@ -1,44 +1,32 @@
-load("@build_bazel_rules_nodejs//:providers.bzl", "declaration_info", "js_module_info")
-# load("@build_bazel_rules_nodejs//:providers.bzl", "declaration_info", "js_ecma_script_module_info", "js_module_info")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 
 def _css_module_impl(ctx):
     if len(ctx.files.srcs) > 1:
         fail("Compiling multiple CSS module files is not yet supported.")
 
-    js_out = ctx.actions.declare_file(ctx.files.srcs[0].basename + ".js", sibling = ctx.outputs.out)
-    ts_out = ctx.actions.declare_file(ctx.files.srcs[0].basename + ".d.ts", sibling = ctx.outputs.out)
-
     args = [
         "-in",
         ctx.files.srcs[0].path,
         "-out",
-        ctx.outputs.out.path,
-        "-js_out",
-        js_out.path,
+        ctx.outputs.css_out.path,
         "-ts_out",
-        ts_out.path,
-        "-js_module_name",
-        ctx.workspace_name + "/" + ctx.files.srcs[0].short_path,
+        ctx.outputs.ts_out.path,
     ]
     args.extend(ctx.attr.flags)
 
     ctx.actions.run(
         inputs = ctx.files.srcs,
-        outputs = [ctx.outputs.out, js_out, ts_out],
+        outputs = [ctx.outputs.css_out, ctx.outputs.ts_out],
         executable = ctx.executable.cssbuild,
         arguments = args,
-        progress_message = "Creating %s and %s" % (ctx.outputs.out.path, js_out.path),
+        progress_message = "Compiling CSS module",
     )
 
     return [
-        DefaultInfo(files = depset(direct = [ctx.outputs.out, js_out, ts_out])),
-        declaration_info(declarations = depset(direct = [ts_out])),
-        js_module_info(sources = depset(direct = [js_out])),
-        # TODO(bduffany): Figure out whether this is needed
-        # js_ecma_script_module_info(sources = depset(direct = [js_out])),
+        DefaultInfo(files = depset([ctx.outputs.css_out, ctx.outputs.ts_out])),
     ]
 
-css_module = rule(
+_css_module = rule(
     implementation = _css_module_impl,
     attrs = {
         "cssbuild": attr.label(
@@ -51,12 +39,31 @@ css_module = rule(
             allow_files = [".module.css"],
             doc = "CSS module input file target. Currently only supports one file at a time.",
         ),
-        "out": attr.output(
+        "css_out": attr.output(
             mandatory = True,
-            doc = "Output file target.",
+            doc = "Output CSS file.",
+        ),
+        "ts_out": attr.output(
+            mandatory = True,
+            doc = "Output TS file (containing CSS classname mapping).",
         ),
         "flags": attr.string_list(
             doc = "Extra flags to pass to cssbuild.",
         ),
     },
 )
+
+def css_module(name, srcs):
+    if len(srcs) != 1:
+        fail("exactly one CSS file must be specified in srcs")
+
+    css_out = srcs[0].replace(".module.css", ".css")
+    ts_out = srcs[0] + ".ts"
+
+    _css_module(
+        name = name,
+        srcs = srcs,
+        ts_out = ts_out,
+        css_out = css_out,
+        flags = ["-camel_case_js_keys"],
+    )
